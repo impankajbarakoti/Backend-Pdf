@@ -40,7 +40,7 @@ app.use(express.json());
 
 // ROUTES
 app.use("/api/books", bookRoutes);
-// app.use("/api/payments", paymentRoutes);
+app.use("/api/payments", paymentRoutes);
 // MONGO CONNECT
 mongoose
   .connect(process.env.MONGO_URI)

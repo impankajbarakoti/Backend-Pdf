@@ -104,6 +104,8 @@ router.post("/", async (req, res) => {
       published,
     } = req.body;
 
+    console.log("file",files)
+
     const newBook = await Book.create({
        title,
        description,
