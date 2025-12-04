@@ -112,12 +112,19 @@ router.post("/create-order", async (req, res) => {
     
     const { amount } = req.body;
 
+    // const options = {
+    //   amount: parseInt(amount * 100), // convert to paise
+    //   currency: "INR",
+    //   receipt: "receipt_order_" + Date.now(),
+    //   payment_capture: 1, // automatic capture
+    // };
+
     const options = {
-      amount: parseInt(amount * 100), // convert to paise
+      amount: Number(amount) * 100,
       currency: "INR",
       receipt: "receipt_order_" + Date.now(),
-      payment_capture: 1, // automatic capture
     };
+
 
     const order = await razorpay.orders.create(options);
     res.json(order);
@@ -137,7 +144,8 @@ router.post("/verify", async (req, res) => {
       email,
       bookId,
     } = req.body;
-
+   console.log("req received");
+   
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
     const expectedSignature = crypto
@@ -151,7 +159,11 @@ router.post("/verify", async (req, res) => {
 
     // Fetch book details
     const book = await Book.findById(bookId);
-    if (!book) return res.status(404).json({ message: "Book not found" });
+    if (!book) {
+      console.log("agfdh not found");
+      
+      return res.status(404).json({ message: "Book not found" });
+    }
 
     // Send Email
     const transporter = nodemailer.createTransport({
